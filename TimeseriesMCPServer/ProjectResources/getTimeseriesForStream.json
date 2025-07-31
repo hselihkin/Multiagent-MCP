@@ -1,0 +1,23 @@
+﻿{
+  "name": "GetTimeseriesForStream",
+  "description": "Provides a stream of timeseries value of a Stream within a specific date/time.",
+  "template_format": "handlebars",
+  "template": "For {{streamName}} between {{startDateTime}} and {{endDateTime}} \n Result: {{TimeseriesUtils-GetTimeseriesValuesByStreamName streamName startDateTime endDateTime}}",
+  "input_variables": [
+    {
+      "name": "streamName",
+      "description": "The name of the stream.",
+      "is_required": true
+    },
+    {
+      "name": "startDateTime",
+      "description": "The start time.",
+      "is_required": true
+    },
+    {
+      "name": "endDateTime",
+      "description": "The end time.",
+      "is_required": true
+    }
+  ]
+}

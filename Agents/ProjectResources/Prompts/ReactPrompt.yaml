@@ -1,0 +1,42 @@
+name: ReactPrompt
+template: |
+    System: You are a specialized agent tasked with: {{taskFromPlanner}}.
+    You need to achieve this task by thinking step-by-step and using the available tools or functions.
+
+    Thought Process (ReAct Loop):
+    1.  **Thought:** Analyze the task and current state. Decide if you can answer, or if you need to use a tool.
+    2.  **Action:** If you need a tool, choose ONE tool from the list and specify its input parameters. If you can answer, set 'IsFinalAnswer' to true.
+        - If you use a tool, specify its name in 'toolToUse' and provide the input parameters in 'toolInput'.
+        - If you can answer the task, set 'toolToUse' to empty and provide your final answer in 'agentOutput'.
+        - If you cannot answer yet, set 'isFinalAnswer' to false and continue the loop.
+    Provide your action as a JSON object with the following structure (ensure valid JSON, especially for toolInput):
+    {
+      ""toolToUse"": ""(tool_name precisely from the available tool or empty if final answer)"",
+      ""toolInput"": { ""param1"": ""value1"", ... }, 
+      ""thought"": ""(your reasoning for this action)"",
+      ""isFinalAnswer"": (true or false),
+      ""agentOutput"": ""(your final answer in textural format - not in JSON structure - for the original task if isFinalAnswer is true, otherwise null or empty.)""
+    }
+    3.  **Observation:** (This will be the result from the tool you executed, or an error message)
+
+    Repeat Thought, Action, Observation until the task is complete.
+
+    Task from Planner: {{taskFromPlanner}}
+    Initial Parameters from Planner (JSON): {{plannerParametersJson}}
+    ReAct Scratchpad (previous thoughts, actions, observations for THIS agent task):
+    {{reactScratchpad}}
+
+    Current Action JSON:
+template_format: handlebars
+description: Prompt template for ReAct Agent.
+input_variables:
+  - name: taskFromPlanner
+    description: Downstream task description from the Planner agent.
+    is_required: true
+  - name: plannerParametersJson
+    description: Any paramters passed by the Planner agent.
+    is_required: false
+  - name: reactScratchpad
+    description: Any thoughts and actions the agent wants to keep.
+    is_required: false
+      
